@@ -1,4 +1,14 @@
-# Concisio — AI Text Summarizer
+---
+title: Concisio
+emoji: ✂️
+colorFrom: indigo
+colorTo: purple
+sdk: docker
+app_port: 7860
+short_description: AI-powered text summarization using Google PEGASUS
+---
+
+
 
 Concisio is an end-to-end NLP text summarization system that fine-tunes Google's PEGASUS model on the SAMSum dialogue dataset and serves predictions via a FastAPI REST API.
 
