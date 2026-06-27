@@ -24,12 +24,12 @@ class PredictionPipeline:
 
         gen_kwargs = {"length_penalty": 0.8, "num_beams": 8, "max_length": 128}
 
-        pipe = pipeline("summarization", model=model_source, tokenizer=tokenizer)
+        pipe = pipeline("text-generation", model=model_source, tokenizer=tokenizer)
 
         print("Dialogue:")
         print(text)
 
-        output = pipe(text, **gen_kwargs)[0]["summary_text"]
+        output = pipe(text, **gen_kwargs)[0]["generated_text"]
         print("\nModel Summary:")
         print(output)
 

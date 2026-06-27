@@ -2,10 +2,31 @@ import os
 from box.exceptions import BoxValueError
 import yaml
 from src.concisio.logging import logger
-from ensure import ensure_annotations
 from box import ConfigBox
 from pathlib import Path
 from typing import Any
+import functools
+import inspect
+
+
+def ensure_annotations(func):
+    """Lightweight replacement for ensure.ensure_annotations (broken on Python 3.12+).
+    Validates that arguments match their type annotations at call time."""
+    @functools.wraps(func)
+    def wrapper(*args, **kwargs):
+        hints = func.__annotations__
+        sig = inspect.signature(func)
+        bound = sig.bind(*args, **kwargs)
+        bound.apply_defaults()
+        for param_name, value in bound.arguments.items():
+            if param_name in hints and param_name != "return":
+                expected = hints[param_name]
+                if not isinstance(value, expected):
+                    raise TypeError(
+                        f"Argument '{param_name}' must be {expected}, got {type(value)}"
+                    )
+        return func(*args, **kwargs)
+    return wrapper
 
 
 @ensure_annotations
